@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript"  src="js/vue.min.js"></script>
+    <script type="text/javascript"  src="js/axios.min.js"></script>
+    <script>
+        /*
+        还有一点就是这里引入静态资源, 要配这个type属性, 否则就会出现静态资源加载失败,type="text/javascript"
+         */
+    </script>
+<!--    <script  src="https://unpkg.com/axios/dist/axios.min.js"></script>-->
+
+</head>
+<body>
+<div id="app">
+<h1>this is index html</h1>
+<a href="account/findAll">findAll</a>
+<hr>
+<form action="account/saveAccount">
+    <table>
+        <tr>
+            <td>姓名:</td><td><input type="text" name="name" v-for=""></td>
+        </tr>
+        <tr>
+            <td>金额:</td><td><input type="text" name="money"></td>
+        </tr>
+        <tr>
+            <td>地址:</td><td><input type="text" name="addr"></td>
+        </tr>
+        <tr><input type="submit" value="保存"></tr>
+    </table>
+</form>
+<hr>
+<!--请开始你的表演-->
+    <p v-for="user in list">姓名:{{user.name}} -- 金额: {{user.money}} -- 住址:{{user.addr}}</p>
+</div>
+</body>
+<script>
+    /*
+    下面这行是 加上才能开启浏览器调用vue调试工具权限的一个设置
+     */
+    Vue.config.devtools = true;
+    let vm = new Vue({
+        el:"#app",
+        data:{
+            list:null,
+        },
+        mounted(){
+            /*
+            这个响应回来的response, axios这个里面有很多东西, .data 才是我们需要的那部分数据,
+            如果你需要其他的东西,用对应的key也可以拿到
+            status: 200 状态码:就是响应的状态码  3xx是转发重定向相关 4xx是url错误找不到资源 5xx是后端服务器代码有问题
+            200就是成功的意思
+             */
+            axios
+                .get('account/findAll')
+                .then(response => (
+                    this.list = response.data,
+                        //这一行是核心, 就.data才是我们要的东西
+                        // 你可以通过response.status拿到200这个值,也是可以的
+                        console.log(response)
+                    ),
+                )
+                .catch(function (error) { // 请求失败处理
+                    console.log(error);
+                });
+        }
+    })
+</script>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript"  src="js/vue.min.js"></script>
+    <script type="text/javascript"  src="js/axios.min.js"></script>
+    <script type="text/javascript" src="js/jquery-3.5.1.js"></script>
+
+</head>
+<body>
+
+<h1>this is index html</h1>
+<a href="account/findAll">findAll</a>
+<hr>
+<form action="account/saveAccount">
+    <table>
+        <tr>
+            <td>姓名:</td><td><input type="text" name="name" v-for=""></td>
+        </tr>
+        <tr>
+            <td>金额:</td><td><input type="text" name="money"></td>
+        </tr>
+        <tr>
+            <td>地址:</td><td><input type="text" name="addr"></td>
+        </tr>
+        <tr><input type="submit" value="保存"></tr>
+    </table>
+</form>
+<hr>
+<div id="app">
+<!--    {{ info }}-->
+    <p v-for="user in info">姓名:{{user.name}}--金额:{{user.money}}--地址:{{user.addr}}</p>
+</div>
+
+<script>
+    let vm = new Vue({
+        el:'#app',
+        data(){
+            return{
+                info:null
+            }
+        },
+        mounted(){
+            // axios
+            // .get('account/findAll')
+            // .then(response=>this.info=response.data)
+
+            // .catch(function (error) { // 请求失败处理
+            //     console.log(error);
+            // });
+
+            let _this = this; //这个应该可以换成=> 下面的是kv的写法 axios也有一样的格式, 只是写法的不同
+            $.ajax({
+                type:"get",
+                url:"account/findAll",
+                // dataType:'json',
+                success:function (data) {
+                    console.log(data)
+
+                    _this.info = data;
+                }
+            })
+        }
+    });
+
+
+
+</script>
+</body>
+
+</html>
