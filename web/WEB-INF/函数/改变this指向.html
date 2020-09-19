@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>this指向</title>
+</head>
+<body>
+<button id="btn">按钮</button>
+<button >按钮</button>
+<button >按钮</button>
+</body>
+<script>
+    //call
+    let o = {
+        name : "andy",
+    }
+    function fn(a,b) {
+        console.log(this);
+        console.log(a+b);
+    }
+    fn.call(o,1,2)
+    //call可以调用函数,改变this指向
+    //call主要作用可以实现继承
+
+
+
+    //apply
+    function fn(a,b) {
+        console.log(this);
+        console.log(a+b);
+    }
+    let i = {
+        name : "andy",
+    }
+    fn.apply(i,)
+    //apply可以调用函数,改变this指向
+    //apply的参数必须是数组形式(伪数组)
+    //主要应用是借助于数学内置对象求最值
+   let arr = [1.,24,34,22,4]
+   let max = Math.max.apply(Math,arr)  //虽然可以写成null空对象,但是最好还是写清楚this的指向:Math
+   let min = Math.min.apply(Math,arr)
+    console.log(max);
+
+
+    //bind
+    let q = {
+        name : "andy",
+    }
+    function fn(a,b) {
+        console.log(this);
+        console.log(a+b);
+    }
+    let f = fn.bind(q,1,2)
+    f();
+    //bind和其他两个最大的区别就是不会调用原函数
+    //可以改变函数内部this指向
+    //返回的是原函数改变this之后产生的新函数
+    //bind典型应用于:有的函数我们不需要立即调用,但是又想改变函数内部this的指向
+
+
+    //例如我们想让一个按钮点击之后就禁用,3秒后再开启这个按钮,此时要用到bind
+    let btn = document.getElementById("btn");
+    btn.onclick = function () {
+        this.disabled = true;
+        setTimeout(  function() {
+            this.disabled = false;
+        }.bind(this), 3000)  //别忘了定时器里面的this指向的window
+    }  //其实这东西可以用箭头函数代替吧
+
+    //多个按钮单个分开
+    let btns = document.querySelectorAll("btn")
+    for (let j = 0; j < btns.length; j++) {
+        btns[j].onclick = function () {
+            this.disabled = true;
+            setTimeout(  function() {
+                this.disabled = false;
+            }.bind(this), 3000)  //bind中写this的用意,为了多个元素互不影响
+        }
+    }
+</script>
+</html>

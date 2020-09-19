@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>浅拷贝和深拷贝</title>
+</head>
+<body>
+
+</body>
+<script>
+    let obj = {
+        id:1,
+        name:'andy',
+        msg:{
+            age:18
+        }
+    }
+    let o = {}
+    for (const i in obj) {
+        o[i] = obj[i]  //浅拷贝时只拷贝一层,也就是说拷贝的age是引用
+    }
+    Object.assign(o,obj)  //浅拷贝的语法糖,ES6
+    o.msg.age = 20;
+    console.log(obj);  //msg中的18会跟着变成20,因为他们是同一个引用
+</script>
+
+
+
+<script>
+    //深拷贝:每一级别的数据都会拷贝
+    let obj = {
+        id:1,
+        name:'andy',
+        msg:{
+            age:18
+        }
+    }
+    let o = {}
+    //封装函数    外层的拷贝完之后利用递归的方式对里层的再进行拷贝
+    function deepCopy(newobj,oldobj) {
+        for (const k in oldobj) {
+            //第一步:判断属性值属于哪种数据类型
+            let item = oldobj[k]
+            if (item instanceof Array){  //判断值是否是数组
+                newobj[k] = [];
+                deepCopy(newobj[k],item);
+            }else if (item instanceof Object){  //判断这个值是否是对象
+                newobj[k] = {};
+                deepCopy(newobj[k],item);
+            }else {  //简单类型
+                newobj[k] = item;
+            }
+        }
+    }
+    deepCopy(o,obj);
+    let arr = []
+    console.log(arr instanceof Object)
+    o.msg.age = 20;  //o和obj中的是两个值,因为两个值是不同的空间
+    console.log(obj);
+</script>
+</html>

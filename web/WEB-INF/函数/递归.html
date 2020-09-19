@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>递归</title>
+</head>
+<body>
+
+</body>
+<script>
+    //递归函数:函数内部自己调用自己,这个函数就是递归函数
+    let num = 1
+    function fn() {
+        console.log('lin')
+        if (num == 6){
+            return; //递归里面必须加退出条件和判断条件
+        }
+        num++
+        fn(); //调用自己
+    }
+    fn();
+</script>
+
+
+
+<script>
+    //求阶乘  1*2*3*4....*n
+    function fn(n) {
+        if (n == 1){
+            return 1;
+        }
+        return n * fn(n-1);
+    }
+    console.log(fn(3));
+    console.log(fn(5));
+</script>
+
+
+<script>
+    //求斐波那契数列  前两个数字相加
+    function fn(n) {  //n对应的序列值
+        if (n == 0){
+            return 0;
+        }else if (n == 1){
+            return 1
+        }else {
+            return fn(n - 1) + fn(n - 2);
+        }
+    }
+    console.log(fn(5));
+</script>
+
+
+<script>
+    //输入id就可以返回数据对象
+    let data = [{
+        id:1,
+        name:'家电',
+        goods:[
+            {
+                id:11,
+                gname:'冰箱'
+            },
+            {
+                id:12,
+                gname:'洗衣机'
+            }]
+        },
+        {
+            id:2,
+            name:'服装'
+        }]
+
+    //利用for each遍历对象  forEach只能得到一层数据
+    function getID(json,id) {
+        let o = {};
+        json.forEach(function (item) {
+            console.log(item);  //得到两个数组元素:家电,服装
+            if (item.id = id){
+                console.log(item);
+                o = item;
+            }else if (item.goods && item.goods.length > 0){  //想得到里层的数据11,12可以利用递归函数
+               o = getID(item.goods,id);  //由于在遍历的时候加了限制条件,所以不用显式加退出条件
+            }  //这里的if应该有两个条件:goods数组,并且数组长度不为0
+
+        }); //前面这一块除过o都是打印数据
+        return o;  //o , 拿到返回的数据对象
+    }
+    console.log(getID(data, 1));
+    getID(data,12);
+</script>
+</html>
